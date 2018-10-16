@@ -66,7 +66,7 @@ class CreatorLockForm extends React.Component {
           <input type="text" id="maxNumberOfKeys" onChange={this.handleChange} defaultValue={this.state.maxNumberOfKeys} />
         </FormLockKeys>
         <FormBalanceWithUnit>
-          三<input type="text" id="keyPrice" onChange={this.handleChange} defaultValue={this.state.keyPrice} />
+          三 <input type="text" id="keyPrice" onChange={this.handleChange} defaultValue={this.state.keyPrice} />
         </FormBalanceWithUnit>
         <div>-</div>
         <LockSubmit onClick={this.handleSubmit}>
