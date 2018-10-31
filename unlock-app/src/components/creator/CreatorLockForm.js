@@ -16,12 +16,12 @@ class CreatorLockForm extends React.Component {
   constructor (props, context) {
     super(props)
     this.state = {
-      keyReleaseMechanism: 0, // Public
-      expirationDuration: 30,
-      expirationDurationUnit: 86400, // Days
+      keyReleaseMechanism: '0', // Public
+      expirationDuration: '30',
+      expirationDurationUnit: '86400', // Days
       keyPrice: '0.01',
       keyPriceCurrency: 'ether',
-      maxNumberOfKeys: 10,
+      maxNumberOfKeys: '10',
       name: 'New Lock',
     }
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -69,6 +69,7 @@ days
         </FormLockKeys>
         <FormBalanceWithUnit>
           三
+          {' '}
           <input type="text" id="keyPrice" onChange={this.handleChange} defaultValue={this.state.keyPrice} />
         </FormBalanceWithUnit>
         <div>-</div>

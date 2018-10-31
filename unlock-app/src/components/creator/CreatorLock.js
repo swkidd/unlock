@@ -39,7 +39,7 @@ export class CreatorLock extends React.Component {
     </LockIconBarContainer>)
 
     if (!transaction) {
-      // We assume that the lock has been succeesfuly deployed?
+      // We assume that the lock has been successfuly deployed?
       // TODO if the transaction is missing we should try to look it up from the lock address
     } else if (transaction.status === 'submitted') {
       lockComponentStatusBlock = <CreatorLockStatus lock={lock} status="Submitted" />

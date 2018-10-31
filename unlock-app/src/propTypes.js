@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 
+export const id = PropTypes.string
+
 export const address = PropTypes.string
 
 export const account = PropTypes.shape({
@@ -9,6 +11,7 @@ export const account = PropTypes.shape({
 })
 
 export const lock = PropTypes.shape({
+  id: PropTypes.string,
   keyReleaseMechanism: PropTypes.string,
   keyPrice: PropTypes.string,
   maxNumberOfKeys: PropTypes.string,
@@ -21,7 +24,7 @@ export const transaction = PropTypes.shape({
   confirmations: PropTypes.number,
   createdAt: PropTypes.number,
   hash: PropTypes.string,
-  lock: PropTypes.shape({}),
+  lock: PropTypes.string,
   name: PropTypes.string,
 })
 
@@ -63,6 +66,7 @@ export default {
   children,
   component,
   configuration,
+  id,
   layout,
   lock,
   locks,

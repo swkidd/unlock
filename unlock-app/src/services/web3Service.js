@@ -148,7 +148,7 @@ export default class Web3Service {
       const unlock = new this.web3.eth.Contract(UnlockContract.abi, UnlockContract.networks[this.networkId].address)
 
       const data = unlock.methods.createLock(
-        lock.keyReleaseMechanism,
+        // lock.keyReleaseMechanism, TODO add keyReleaseMechanism to createLock when it becomes available in the contract
         lock.expirationDuration,
         lock.keyPrice,
         lock.maxNumberOfKeys
