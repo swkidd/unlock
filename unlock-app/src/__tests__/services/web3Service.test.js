@@ -182,7 +182,8 @@ describe('Web3Service', () => {
           value: '0x0',
           gas: '0x16e360',
           gasPrice: '0x04a817c800',
-          input: '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a' })
+          input: '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a',
+        })
 
         return web3Service.refreshTransaction(transaction).then((_transaction) => {
           expect(_transaction.confirmations).toEqual(15) //29-14
@@ -457,7 +458,7 @@ describe('Web3Service', () => {
         }], callback)
         sendTransaction.emit('receipt', receipt)
         expect(callback).toHaveBeenCalledWith(null, { event: 'receipt', args: { receipt } })
-        expect(callback).toHaveBeenCalledWith(null, { event: 'ping', args: {  } })
+        expect(callback).toHaveBeenCalledWith(null, { event: 'ping', args: {} })
 
         web3Service.web3.eth.abi.decodeLog = previousDecodeLog
       })
@@ -481,7 +482,7 @@ describe('Web3Service', () => {
         const gas = ''
         const privateKey = null
         const contractAbi = []
-        const callback = () => {}
+        const callback = () => { }
         web3Service.sendTransaction({ to, from, data, value, gas, privateKey, contractAbi }, callback)
         expect(mockSendTransaction).toHaveBeenCalledWith({ data, from, value, gas, to })
         expect(web3Service.handleTransaction).toHaveBeenCalledWith(mockTransaction, [], callback)
@@ -613,7 +614,7 @@ describe('Web3Service', () => {
         const encodeABI = jest.fn()
 
         // Mock
-        web3Service.web3.eth.Contract = function(abi, address) {
+        web3Service.web3.eth.Contract = function (abi, address) {
           this.methods = {
             withdraw: () => {
               return {
@@ -631,7 +632,7 @@ describe('Web3Service', () => {
           to: lock.address,
           from: account.address,
           data: undefined,
-          gas: 1000000,
+          gas: web3Service.getGas(account.address, lock.address, undefined),
           privateKey: account.privateKey,
           contractAbi: LockContract.abi,
         }, expect.anything())
@@ -652,7 +653,7 @@ describe('Web3Service', () => {
         }
         const previousContract = web3Service.web3.eth.Contract
         const previousSendTransaction = web3Service.sendTransaction
-        web3Service.sendTransaction = function(transactionData, callback) {
+        web3Service.sendTransaction = function (transactionData, callback) {
           return callback(null, { event: 'receipt', args: [] })
         }
 

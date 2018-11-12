@@ -77,6 +77,25 @@ export default class Web3Service {
   }
 
   /**
+   * A helper function used for estimating gas.
+   * It is also used by web3Service.test.js.
+   */
+
+  getGas({ _from, _to, _data }) {
+    this.web3.eth.estimateGas({
+      from: _from,
+      to: _to,
+      data: _data,
+    })
+      .then(_gasAmount => {
+        let gasAmount = _gasAmount
+        console.log(gasAmount)
+        return gasAmount
+      })
+      .catch(error => console.log(error))
+  }
+
+  /**
    * This helper function signs a transaction
    * and sends it.
    * @private
@@ -168,7 +187,7 @@ export default class Web3Service {
         to: UnlockContract.networks[this.networkId].address,
         from: owner.address,
         data: data,
-        gas: 2000000,
+        gas: this.getGas(owner.address, UnlockContract.networks[this.networkId].address, data),
         privateKey: owner.privateKey,
         contractAbi: UnlockContract.abi,
       }, (error, { event, args }) => {
@@ -342,7 +361,7 @@ export default class Web3Service {
         to: key.lockAddress,
         from: key.owner,
         data: data,
-        gas: 1000000,
+        gas: this.getGas(key.owner, key.lockAddress, data),
         value: lock.keyPrice,
         privateKey: account.privateKey,
         contractAbi: LockContract.abi,
@@ -452,7 +471,7 @@ export default class Web3Service {
         to: lock.address,
         from: account.address,
         data: data,
-        gas: 1000000,
+        gas: this.getGas(account.address, lock.address, data),
         privateKey: account.privateKey,
         contractAbi: LockContract.abi,
       }, (error, { event }) => {
