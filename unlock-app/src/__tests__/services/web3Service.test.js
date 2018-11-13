@@ -632,7 +632,7 @@ describe('Web3Service', () => {
           to: lock.address,
           from: account.address,
           data: undefined,
-          gas: web3Service.getGas(account.address, lock.address, undefined),
+          gas: web3Service.getGas(lock.address, account.address, null),
           privateKey: account.privateKey,
           contractAbi: LockContract.abi,
         }, expect.anything())

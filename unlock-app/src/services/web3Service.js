@@ -81,10 +81,10 @@ export default class Web3Service {
    * It is also used by web3Service.test.js.
    */
 
-  getGas({ _from, _to, _data }) {
+  getGas(_to, _from, _data) {
     this.web3.eth.estimateGas({
-      from: _from,
       to: _to,
+      from: _from,
       data: _data,
     })
       .then(_gasAmount => {
@@ -187,7 +187,7 @@ export default class Web3Service {
         to: UnlockContract.networks[this.networkId].address,
         from: owner.address,
         data: data,
-        gas: this.getGas(owner.address, UnlockContract.networks[this.networkId].address, data),
+        gas: this.getGas(UnlockContract.networks[this.networkId].address, owner.address, data),
         privateKey: owner.privateKey,
         contractAbi: UnlockContract.abi,
       }, (error, { event, args }) => {
@@ -361,7 +361,7 @@ export default class Web3Service {
         to: key.lockAddress,
         from: key.owner,
         data: data,
-        gas: this.getGas(key.owner, key.lockAddress, data),
+        gas: this.getGas(key.lockAddress, key.owner, data),
         value: lock.keyPrice,
         privateKey: account.privateKey,
         contractAbi: LockContract.abi,
@@ -471,7 +471,7 @@ export default class Web3Service {
         to: lock.address,
         from: account.address,
         data: data,
-        gas: this.getGas(account.address, lock.address, data),
+        gas: this.getGas(lock.address, account.address, data),
         privateKey: account.privateKey,
         contractAbi: LockContract.abi,
       }, (error, { event }) => {
