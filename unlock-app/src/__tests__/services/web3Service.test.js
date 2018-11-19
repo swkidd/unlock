@@ -612,6 +612,7 @@ describe('Web3Service', () => {
         const previousSendTransaction = web3Service.sendTransaction
         web3Service.sendTransaction = jest.fn()
         const encodeABI = jest.fn()
+        const gasAmount = web3Service.getGas(lock.address, null, null)
 
         // Mock
         web3Service.web3.eth.Contract = function (abi, address) {
@@ -632,7 +633,7 @@ describe('Web3Service', () => {
           to: lock.address,
           from: account.address,
           data: undefined,
-          gas: web3Service.getGas(lock.address, account.address, null),
+          gas: gasAmount,
           privateKey: account.privateKey,
           contractAbi: LockContract.abi,
         }, expect.anything())
