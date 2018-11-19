@@ -121,7 +121,6 @@ contract PublicLock is ILockPublic {
   )
     public {
       unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract. (TODO: handle upgrades?)
-      owner = _owner;
       expirationDuration = _expirationDuration;
       keyPrice = _keyPrice;
       maxNumberOfKeys = _maxNumberOfKeys;
@@ -220,6 +219,7 @@ contract PublicLock is ILockPublic {
   {
     uint256 balance = address(this).balance;
     require(balance > 0, "Not enough funds");
+    address owner = Ownable.owner();
     owner.transfer(balance);
   }
 

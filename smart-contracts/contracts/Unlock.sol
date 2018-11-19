@@ -71,7 +71,7 @@ contract Unlock is IUnlock, Ownable, Initializable {
     public
     initializer()
   {
-    owner = _owner;
+    transferOwnership(_owner);
     grossNetworkProduct = 0;
     totalDiscountGranted = 0;
   }
@@ -103,6 +103,9 @@ contract Unlock is IUnlock, Ownable, Initializable {
       totalSales: 0,
       yieldedDiscountTokens: 0
     });
+
+    // Transfer Ownership of the new Lock
+    newPublicLock.transferOwnership(msg.sender);
 
     // trigger event
     emit NewLock(msg.sender, address(newPublicLock));

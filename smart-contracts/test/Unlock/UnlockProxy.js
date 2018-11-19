@@ -62,12 +62,13 @@ contract('Unlock', function (accounts) {
         , {
           from: accounts[0]
         })
-      const resultsBefore = await this.unlock.locks(transaction.logs[0].args.newLockAddress)
+      console.log(transaction.logs)
+      const resultsBefore = await this.unlock.locks(transaction.logs[2].args.newLockAddress)
       const implV2 = await UnlockTestV2.new()
-      const initV2Call = zos.encodeCall('initializeV2')
+      const initV2Call = zos.encodeCall('initializeV2', ['address'], [unlockOwner])
       await this.proxy.upgradeToAndCall(implV2.address, initV2Call, { from: proxyOwner })
       this.unlock = await UnlockTestV2.at(this.proxy.address)
-      const resultsAfter = await this.unlock.locks(transaction.logs[0].args.newLockAddress)
+      const resultsAfter = await this.unlock.locks(transaction.logs[2].args.newLockAddress)
       assert.equal(JSON.stringify(resultsAfter), JSON.stringify(resultsBefore))
     })
 

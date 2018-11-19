@@ -15,7 +15,7 @@ exports.shouldCreateLock = function (accounts) {
     })
 
     it('should have kept track of the Lock inside Unlock with the right balances', async function () {
-      let publicLock = PublicLock.at(transaction.logs[0].args.newLockAddress)
+      let publicLock = PublicLock.at(transaction.logs[2].args.newLockAddress)
       // This is a bit of a dumb test because when the lock is missing, the value are 0 anyway...
       let [deployed, totalSales, yieldedDiscountTokens] = await this.unlock.locks(publicLock.address)
       assert(deployed)
@@ -33,7 +33,7 @@ exports.shouldCreateLock = function (accounts) {
     })
 
     it('should have created the lock with the right address for unlock', async function () {
-      let publicLock = PublicLock.at(transaction.logs[0].args.newLockAddress)
+      let publicLock = PublicLock.at(transaction.logs[2].args.newLockAddress)
       let unlockProtocol = await publicLock.unlockProtocol()
       assert.equal(unlockProtocol, this.unlock.address)
     })

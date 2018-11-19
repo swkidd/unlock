@@ -18,10 +18,11 @@ contract UnlockTestV2 is Unlock {
   uint public exampleData;
 
   // Adding a second initialize for the new data as 'initialized' is already true when v2 is deployed.
-  function initializeV2()
+  function initializeV2(address _owner)
     public
   {
     require(!initializedV2);
+    transferOwnership(_owner);
     exampleData = 42;
     initializedV2 = true;
   }
