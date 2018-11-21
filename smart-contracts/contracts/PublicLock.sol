@@ -19,7 +19,7 @@ contract PublicLock is ILockPublic {
   // The struct for a key
   struct Key {
     uint expirationTimestamp;
-    bytes data; // Note: This can be expensive?
+    bytes32 data; // Note: This can be expensive?
   }
 
   // Fields
@@ -139,7 +139,7 @@ contract PublicLock is ILockPublic {
   */
   function purchaseFor(
     address _recipient,
-    bytes _data
+    bytes32 _data
   )
     external
     payable
@@ -156,7 +156,7 @@ contract PublicLock is ILockPublic {
   function purchaseForFrom(
     address _recipient,
     address _referrer,
-    bytes _data
+    bytes32 _data
   )
     external
     payable
@@ -303,6 +303,47 @@ contract PublicLock is ILockPublic {
     return _getApproved(_tokenId);
   }
 
+    /**
+  * @dev function which returns a subset of the keys for this Lock as an array
+  * @param _startIndex the index (in `owners` array) from which we begin retrieving keys
+  */
+  function getKeysByPage(uint _startIndex)
+    external
+    view
+    returns (uint[], bytes32[])
+  {
+    require(outstandingKeys() > 0, "No keys to retrieve");
+    require(_startIndex >= 0 && _startIndex < outstandingKeys(), "Index must be in-bounds");
+    uint endOfPageIndex;
+
+    if (_startIndex + 9 > owners.length) {
+      endOfPageIndex = owners.length - 1;
+    } else {
+      endOfPageIndex = _startIndex + 9;
+    }
+
+    address[] memory ownersByPage = new address[](10);
+    uint[] memory timestampsArray = new uint[](10);
+    bytes32[] memory keyDataArray = new bytes32[](10);
+    Key memory tempKey;
+    uint pageIndex = 0;
+
+    // Build the specified set of owners into a new temporary array
+    for (uint256 i = _startIndex; i <= endOfPageIndex; i++) {
+      ownersByPage[pageIndex] = owners[i];
+      pageIndex++;
+    }
+
+    // Loop through ownersByPage & build the requested keys into 2 new temporary arrays
+    for (uint256 n = 0; n < ownersByPage.length; n++) {
+      tempKey = keyByOwner[ownersByPage[n]];
+      timestampsArray[n] = tempKey.expirationTimestamp;
+      keyDataArray[n] = tempKey.data;
+    }
+
+    return(timestampsArray, keyDataArray);
+  }
+
   /**
    * Public function which returns the total number of keys (both expired and valid)
    */
@@ -337,7 +378,7 @@ contract PublicLock is ILockPublic {
     public
     view
     hasKey(_owner)
-    returns (bytes data)
+    returns (bytes32 data)
   {
     return keyByOwner[_owner].data;
   }
@@ -371,7 +412,7 @@ contract PublicLock is ILockPublic {
   function _purchaseFor(
     address _recipient,
     address _referrer,
-    bytes _data
+    bytes32 _data
   )
     internal
     notSoldOut()
