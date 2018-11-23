@@ -104,6 +104,7 @@ contract('Lock', (accounts) => {
           return locks['FIRST'].getKeysByPage.call(0, { from: accounts[5] })
         })
         .then((results) => {
+          console.log(results)
           assert.equal(2, keys.toNumber(10))
           assert.equal(results[0][0].toNumber(10), expirationTimestamp1.toNumber(10))
           assert.equal(results[1][0], keyData1)

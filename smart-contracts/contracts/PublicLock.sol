@@ -19,7 +19,7 @@ contract PublicLock is ILockPublic {
   // The struct for a key
   struct Key {
     uint expirationTimestamp;
-    bytes32 data; // Note: This can be expensive?
+    bytes data; // Note: This can be expensive?
   }
 
   // Fields
@@ -139,7 +139,7 @@ contract PublicLock is ILockPublic {
   */
   function purchaseFor(
     address _recipient,
-    bytes32 _data
+    bytes _data
   )
     external
     payable
@@ -156,7 +156,7 @@ contract PublicLock is ILockPublic {
   function purchaseForFrom(
     address _recipient,
     address _referrer,
-    bytes32 _data
+    bytes _data
   )
     external
     payable
@@ -310,7 +310,7 @@ contract PublicLock is ILockPublic {
   function getKeysByPage(uint _startIndex)
     external
     view
-    returns (uint[], bytes32[])
+    returns (uint[], bytes[])
   {
     require(outstandingKeys() > 0, "No keys to retrieve");
     require(_startIndex >= 0 && _startIndex < outstandingKeys(), "Index must be in-bounds");
@@ -324,7 +324,7 @@ contract PublicLock is ILockPublic {
 
     address[] memory ownersByPage = new address[](10);
     uint[] memory timestampsArray = new uint[](10);
-    bytes32[] memory keyDataArray = new bytes32[](10);
+    bytes[] memory keyDataArray = new bytes[](10);
     Key memory tempKey;
     uint pageIndex = 0;
 
@@ -378,7 +378,7 @@ contract PublicLock is ILockPublic {
     public
     view
     hasKey(_owner)
-    returns (bytes32 data)
+    returns (bytes data)
   {
     return keyByOwner[_owner].data;
   }
@@ -412,7 +412,7 @@ contract PublicLock is ILockPublic {
   function _purchaseFor(
     address _recipient,
     address _referrer,
-    bytes32 _data
+    bytes _data
   )
     internal
     notSoldOut()

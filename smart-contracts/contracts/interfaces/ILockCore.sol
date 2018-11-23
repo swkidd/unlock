@@ -14,7 +14,7 @@ interface ILockCore {
   */
   function purchaseFor(
     address _recipient,
-    bytes32 _data
+    bytes _data
   )
     external
     payable;
@@ -28,7 +28,7 @@ interface ILockCore {
   function purchaseForFrom(
     address _recipient,
     address _referrer,
-    bytes32 _data
+    bytes _data
   )
     external
     payable;
