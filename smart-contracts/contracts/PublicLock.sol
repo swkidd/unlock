@@ -304,7 +304,7 @@ contract PublicLock is ILockPublic {
   }
 
     /**
-  * @dev function which returns a subset of the keys for this Lock as an array
+  * A function which returns a subset of the keys for this Lock as an array
   * @param _startIndex the index (in `owners` array) from which we begin retrieving keys
   */
   function getKeysByPage(uint _startIndex)
