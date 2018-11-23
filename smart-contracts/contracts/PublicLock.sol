@@ -303,46 +303,73 @@ contract PublicLock is ILockPublic {
     return _getApproved(_tokenId);
   }
 
-    /**
+  function toBytes32(
+    bytes b
+  )
+    public
+    pure
+    returns (uint, bytes32[])
+  {
+    require(b.length >= 32);
+    uint length = b.length / 32 + 1;
+    bytes32 tempBytes32;
+    uint start = 0;
+    uint byteCounter = 0;
+    bytes32[] memory dataChunks = new bytes32[](length);
+
+    for (uint i = 0; i < b.length; i += 32) {
+      assembly {
+        tempBytes32 := mload(add(add(b, 0x20), start))
+      }
+      dataChunks[byteCounter] = tempBytes32;
+      start += 32;
+      byteCounter++;
+    }
+
+    return(b.length, dataChunks);
+  }
+
+  /**
   * A function which returns a subset of the keys for this Lock as an array
   * @param _startIndex the index (in `owners` array) from which we begin retrieving keys
   */
-  function getKeysByPage(uint _startIndex)
-    external
-    view
-    returns (uint[], bytes[])
-  {
-    require(outstandingKeys() > 0, "No keys to retrieve");
-    require(_startIndex >= 0 && _startIndex < outstandingKeys(), "Index must be in-bounds");
-    uint endOfPageIndex;
+  // function getKeysByPage(uint _startIndex)
+  //   external
+  //   view
+  //   returns (uint[], bytes[])
+  // {
+  //   require(outstandingKeys() > 0, "No keys to retrieve");
+  //   require(_startIndex >= 0 && _startIndex < outstandingKeys(), "Index must be in-bounds");
+  //   uint endOfPageIndex;
 
-    if (_startIndex + 9 > owners.length) {
-      endOfPageIndex = owners.length - 1;
-    } else {
-      endOfPageIndex = _startIndex + 9;
-    }
+  //   if (_startIndex + 9 > owners.length) {
+  //     endOfPageIndex = owners.length - 1;
+  //   } else {
+  //     endOfPageIndex = _startIndex + 9;
+  //   }
 
-    address[] memory ownersByPage = new address[](10);
-    uint[] memory timestampsArray = new uint[](10);
-    bytes[] memory keyDataArray = new bytes[](10);
-    Key memory tempKey;
-    uint pageIndex = 0;
+  //   address[] memory ownersByPage = new address[](10);
+  //   uint[] memory timestampsArray = new uint[](10);
+  //   bytes[] memory keyDataArray = new bytes[](10);
+  //   Key memory tempKey;
+  //   uint pageIndex = 0;
 
-    // Build the specified set of owners into a new temporary array
-    for (uint256 i = _startIndex; i <= endOfPageIndex; i++) {
-      ownersByPage[pageIndex] = owners[i];
-      pageIndex++;
-    }
+  //   // Build the specified set of owners into a new temporary array
+  //   for (uint256 i = _startIndex; i <= endOfPageIndex; i++) {
+  //     ownersByPage[pageIndex] = owners[i];
+  //     pageIndex++;
+  //   }
 
-    // Loop through ownersByPage & build the requested keys into 2 new temporary arrays
-    for (uint256 n = 0; n < ownersByPage.length; n++) {
-      tempKey = keyByOwner[ownersByPage[n]];
-      timestampsArray[n] = tempKey.expirationTimestamp;
-      keyDataArray[n] = tempKey.data;
-    }
+  //   // Loop through ownersByPage & build the requested keys into 2 new temporary arrays
+  //   for (uint256 n = 0; n < ownersByPage.length; n++) {
+  //     tempKey = keyByOwner[ownersByPage[n]];
+  //     timestampsArray[n] = tempKey.expirationTimestamp;
+  //     keyDataArray[n] = tempKey.data;
+  //     // keyDataArray[n] = toBytes32(tempKey.data);
+  //   }
 
-    return(timestampsArray, keyDataArray);
-  }
+  //   return(timestampsArray, keyDataArray);
+  // }
 
   /**
    * Public function which returns the total number of keys (both expired and valid)

@@ -18,7 +18,7 @@ contract('Lock', (accounts) => {
   })
 
   describe('getKeysByPage', () => {
-    it('should fail with a negative start index', () => {
+    it.skip('should fail with a negative start index', () => {
       return locks['FIRST'].purchaseFor(accounts[0], 'Julien', {
         value: Units.convert('0.01', 'eth', 'wei')
       })
@@ -35,7 +35,7 @@ contract('Lock', (accounts) => {
         })
     })
 
-    it('should fail with too high of a start index', () => {
+    it.skip('should fail with too high of a start index', () => {
       return locks['FIRST'].purchaseFor(accounts[0], 'Julien', {
         value: Units.convert('0.01', 'eth', 'wei')
       })
@@ -52,7 +52,7 @@ contract('Lock', (accounts) => {
         })
     })
 
-    it('should fail when there are no keys', () => {
+    it.skip('should fail when there are no keys', () => {
       return locks['FIRST'].getKeysByPage(1, {
         from: accounts[5]
       })
@@ -65,7 +65,23 @@ contract('Lock', (accounts) => {
         })
     })
 
-    it('should return the requested keys', () => {
+    it('should return the length of the bytes in data', () => {
+      let data = ['Nick', '1-234-344-5678', 'nfurfaro68@hotmail.com']
+      return locks['FIRST'].purchaseFor(accounts[0], 'Julien', {
+        value: Units.convert('0.01', 'eth', 'wei')
+      })
+        .then(() => {
+          return locks['FIRST'].toBytes32(data)
+        })
+        .then((result) => {
+          console.log(result[0].toNumber(10))
+          console.log(result[1])
+          // try mapping Web3Utils.toUtf8 over result[1]
+          console.log(`${Web3Utils.toUtf8(result[1][0])}${Web3Utils.toUtf8(result[1][1])}`)
+        })
+    })
+
+    it.skip('should return the requested keys', () => {
       let keys, expirationTimestamp1, expirationTimestamp2, keyData1, keyData2
 
       return locks['FIRST'].purchaseFor(accounts[0], 'Julien', {
