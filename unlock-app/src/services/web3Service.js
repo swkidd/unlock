@@ -81,7 +81,7 @@ export default class Web3Service {
    * It is also used by web3Service.test.js.
    */
 
-  getGas(_to, _from, _data) {
+  getGas({ _to, _from, _data }) {
     this.web3.eth.estimateGas({
       to: _to,
       from: _from,
@@ -90,11 +90,9 @@ export default class Web3Service {
       .then(_gasAmount => {
         let gasAmount = _gasAmount
         console.log(gasAmount)
-        return resolve(gasAmount)
       }).catch(error => {
         console.error('Failed to retrive gas estimate: ')
         console.error(error)
-        return reject(error)
       })
   }
 

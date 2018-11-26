@@ -612,7 +612,7 @@ describe('Web3Service', () => {
         const previousSendTransaction = web3Service.sendTransaction
         web3Service.sendTransaction = jest.fn()
         const encodeABI = jest.fn()
-        const gasAmount = web3Service.getGas(lock.address, null, null)
+        const gasAmount = web3Service.getGas({ to: lock.address, from: account.address, data: null })
 
         // Mock
         web3Service.web3.eth.Contract = function (abi, address) {
