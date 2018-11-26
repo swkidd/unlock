@@ -89,7 +89,7 @@ export default class Web3Service {
     })
       .then(_gasAmount => {
         let gasAmount = _gasAmount
-        console.log(gasAmount)
+        return gasAmount
       }).catch(error => {
         console.error('Failed to retrive gas estimate: ')
         console.error(error)
@@ -467,12 +467,13 @@ export default class Web3Service {
     return new Promise((resolve) => {
       const lockContract = new this.web3.eth.Contract(LockContract.abi, lock.address)
       const data = lockContract.methods.withdraw().encodeABI()
+      const gasAmount = this.getGas(lock.address, account.address, data)
 
       return this.sendTransaction({
         to: lock.address,
         from: account.address,
         data: data,
-        gas: this.getGas(lock.address, account.address, data),
+        gas: gasAmount,
         privateKey: account.privateKey,
         contractAbi: LockContract.abi,
       }, (error, { event }) => {
