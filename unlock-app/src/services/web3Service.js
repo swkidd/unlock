@@ -90,9 +90,12 @@ export default class Web3Service {
       .then(_gasAmount => {
         let gasAmount = _gasAmount
         console.log(gasAmount)
-        return gasAmount
+        return resolve(gasAmount)
+      }).catch(error => {
+        console.error('Failed to retrive gas estimate: ')
+        console.error(error)
+        return reject(error)
       })
-      .catch(error => console.log(error))
   }
 
   /**
